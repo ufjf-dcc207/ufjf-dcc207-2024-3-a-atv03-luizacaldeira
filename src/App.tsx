@@ -1,52 +1,40 @@
 import Animal from './Animal';
 import Exibicao from './Exibicao';
+import EXIBICOES, { AnimaisTuplaType } from "./exibicoes";
 import './App.css';
-import { ReactNode } from 'react';
 
-type AnimaisTuplaType = [string,string,number, boolean];
-const ANIMAIS:AnimaisTuplaType[] = [
-  ["🦁","Leão", 190.0, true],
-  ["🦩","Flamingo", 12.0, true],
-  ["🦒","Girafa", 1200.0, true],
-  ["🦜","Papagaio", 0.120, true],
-];
+interface ListaAnimaisProps {animais: Array<AnimaisTuplaType>};
 
 function App() {
-  const exA1:ReactNode[] = [];
-  const exB2:ReactNode[] = [];
-
-for (let i = 0; i < ANIMAIS.length; i++){
-  const ex = ANIMAIS[i][2] < 200 ? exA1 : exB2;
-  ex.push (
-    <Animal 
-    key={ANIMAIS[i][1]}
-    icone={ANIMAIS[i][0]}
-    nome={ANIMAIS[i][1]}
-    peso={ANIMAIS[i][2]}
-    extincao={ANIMAIS[i][3]}
-    />
-  );
-}
-
   return (
   <div className='app'>
+    {EXIBICOES.map(exibicao => ( 
     <Exibicao 
-    abertura={new Date("2024-11-06T08:00:00.000-03:00")}
-    fechamento={new Date("2024-11-06T12:00-03:00")}
-    cercado="A1"
+      abertura={new Date(exibicao[1])}
+      fechamento={new Date(exibicao[2])}
+      cercado= {exibicao[0]}
     >
-     {exA1}   
+    <ListaAnimais animais={exibicao[3]}/>
     </Exibicao>
-
-    <Exibicao 
-    abertura={new Date("2024-11-06T13:00:00.000-03:00")}
-    fechamento={new Date("2024-11-06T17:00-03:00")}
-    cercado="B1"
-    > {exB2}
-    </Exibicao>
-  
+    ))}
   </div>
   );  
 } 
+function ListaAnimais({animais}:ListaAnimaisProps){
+  return ( 
+    <>
+      {animais.map((animal) => (
+            <Animal 
+            key={animal[1]}
+            icone={animal[0]}
+            nome={animal[1]}
+            peso={animal[2]}
+            extincao={animal[3]}
+            /> 
+      ))}   
+    </>
+  );
+}
+
 
 export default App;
